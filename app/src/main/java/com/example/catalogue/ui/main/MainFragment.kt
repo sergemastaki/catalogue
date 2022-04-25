@@ -10,6 +10,7 @@ import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.example.catalogue.R
+import com.example.catalogue.entity.Movie
 
 class MainFragment : Fragment() {
 
@@ -20,6 +21,7 @@ class MainFragment : Fragment() {
     private lateinit var viewModel: MainViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchView: EditText
+    private val items = mutableListOf<Movie>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,10 +36,9 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        val movieAdapter = MovieAdapter()
-        recyclerView.adapter = movieAdapter
+        recyclerView.adapter = MovieAdapter()
         viewModel.movies.observe(viewLifecycleOwner){
-            movieAdapter.items = it
+            (recyclerView.adapter as MovieAdapter).submitList(it.toMutableList())
         }
         searchView.addTextChangedListener {
             viewModel.updateQuery(it.toString())

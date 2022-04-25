@@ -5,15 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.catalogue.R
 import com.example.catalogue.entity.Movie
 
-class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
-    var items: List<Movie> = emptyList()
-
+class MovieAdapter: ListAdapter<Movie,MovieAdapter.MovieHolder>(MovieDiffCallback) {
     class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val titre: TextView = itemView.findViewById(R.id.titre_movie)
         val description: TextView = itemView.findViewById(R.id.description_movie)
@@ -26,12 +25,19 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
     }
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
-        holder.titre.text = items[position].titre
-        holder.description.text = items[position].description
-        Glide.with(holder.itemView).load(items[position].image).into(holder.image)
+        holder.titre.text = getItem(position).titre
+        holder.description.text = getItem(position).description
+        Glide.with(holder.itemView).load(getItem(position).image).into(holder.image)
+    }
+}
+
+object MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
+    override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun getItemCount(): Int {
-        return items.size
+    override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        return oldItem == newItem
     }
+
 }
