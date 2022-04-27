@@ -23,7 +23,7 @@ class MovieRepository {
                     it.toEntity()
                 })
             }
-        } catch (exception: RuntimeException) {
+        } catch (exception: Exception) {
             Log.e("MOVIE_REPOSITORY", exception.message, exception)
             return@withContext emptyFlow()
         }
@@ -41,7 +41,7 @@ class MovieRepository {
                     it.toEntity()
                 })
             }
-        } catch (exception: RuntimeException) {
+        } catch (exception: Exception) {
             Log.e("MOVIE_REPOSITORY", exception.message, exception)
             return@withContext emptyFlow()
         }

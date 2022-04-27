@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,12 +13,18 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_baseline_search_24"/>
+        android:hint="@string/search_here"
+        android:drawableStart="@drawable/ic_baseline_search_24"
+        android:autofillHints=""
+        android:inputType="text" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        tools:context="com.example.catalogue.MainFragment"
+        tools:listitem="@layout/item_movie"
         />
 
 </LinearLayout>

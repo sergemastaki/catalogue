@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Catalogue</string>
+    <string name="search_here">Rechercher ici</string>
 </resources>

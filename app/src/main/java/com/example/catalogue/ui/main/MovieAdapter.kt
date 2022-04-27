@@ -14,9 +14,15 @@ import com.example.catalogue.entity.Movie
 
 class MovieAdapter: ListAdapter<Movie,MovieAdapter.MovieHolder>(MovieDiffCallback) {
     class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val titre: TextView = itemView.findViewById(R.id.titre_movie)
-        val description: TextView = itemView.findViewById(R.id.description_movie)
-        val image: ImageView = itemView.findViewById(R.id.image_movie)
+        private val titre: TextView = itemView.findViewById(R.id.titre_movie)
+        private val description: TextView = itemView.findViewById(R.id.description_movie)
+        private val image: ImageView = itemView.findViewById(R.id.image_movie)
+
+        fun bind(movie: Movie){
+            titre.text = movie.titre
+            description.text = movie.description
+            Glide.with(itemView).load(movie.image).into(image)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
@@ -25,9 +31,7 @@ class MovieAdapter: ListAdapter<Movie,MovieAdapter.MovieHolder>(MovieDiffCallbac
     }
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
-        holder.titre.text = getItem(position).titre
-        holder.description.text = getItem(position).description
-        Glide.with(holder.itemView).load(getItem(position).image).into(holder.image)
+        holder.bind(getItem(position))
     }
 }
 

@@ -1,16 +1,15 @@
 package com.example.catalogue.ui.main
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.catalogue.R
-import com.example.catalogue.entity.Movie
+import com.example.catalogue.util.onTextChanged
 
 class MainFragment : Fragment() {
 
@@ -18,30 +17,25 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var searchView: EditText
-    private val items = mutableListOf<Movie>()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.main_fragment, container, false)
-        recyclerView = view.findViewById(R.id.recycler_view)
-        searchView = view.findViewById(R.id.search_view)
-        return view
+        return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        recyclerView.adapter = MovieAdapter()
+        val viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
+        val movieAdapter = MovieAdapter()
+        recyclerView.adapter = movieAdapter
         viewModel.movies.observe(viewLifecycleOwner){
-            (recyclerView.adapter as MovieAdapter).submitList(it.toMutableList())
+            movieAdapter.submitList(it.toList())
         }
-        searchView.addTextChangedListener {
-            viewModel.updateQuery(it.toString())
+        val searchView: EditText = view.findViewById(R.id.search_view)
+        searchView.onTextChanged(300) { text ->
+            viewModel.updateQuery(text)
         }
     }
 }
